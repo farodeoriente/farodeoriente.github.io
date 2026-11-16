@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4.00 -4.00 168.00 168.00" width="168" height="168">
+<title>东方灯塔 Faro de Oriente icon</title>
+
+  <defs>
+    <clipPath id="idisk"><circle cx="80" cy="80" r="61"/></clipPath>
+    <mask id="isunM" maskUnits="userSpaceOnUse" x="0" y="0" width="160" height="160">
+      <rect width="160" height="160" fill="#fff"/>
+      <path d="M69 104.5 L73.5 56 H86.5 L91 104.5 Z M70 51 H90 V56.5 H70 Z M74.5 39.5 H85.5 V51.5 H74.5 Z M73.5 40 Q80 28.5 86.5 40 Z" fill="#000" stroke="#000" stroke-width="9" stroke-linejoin="round"/>
+    </mask>
+    <mask id="iseaM" maskUnits="userSpaceOnUse" x="0" y="0" width="160" height="160">
+      <rect width="160" height="160" fill="#fff"/>
+      <g fill="none" stroke="#000" stroke-linecap="round"><path d="M46 131 q5.667 -4 11.333 0 t11.333 0 t11.333 0 t11.333 0 t11.333 0 t11.333 0 " transform="translate(0 -10)" stroke-width="6"/></g>
+    </mask>
+    <mask id="itowM" maskUnits="userSpaceOnUse" x="0" y="0" width="160" height="160">
+      <rect width="160" height="160" fill="#fff"/>
+      <g fill="#000"><rect x="76.5" y="42" width="7" height="7.5"/></g>
+    </mask>
+  </defs>
+  <circle cx="80" cy="80" r="72" fill="none" stroke="#1f5a6b" stroke-width="10"/>
+  <g clip-path="url(#idisk)">
+    <path d="M40 104 A40 40 0 0 1 120 104 Z" fill="#ee8a5c" mask="url(#isunM)"/>
+    <rect x="0" y="104" width="160" height="56" fill="#1f5a6b" mask="url(#iseaM)"/>
+  </g>
+  <path d="M69 104.5 L73.5 56 H86.5 L91 104.5 Z M70 51 H90 V56.5 H70 Z M74.5 39.5 H85.5 V51.5 H74.5 Z M73.5 40 Q80 28.5 86.5 40 Z" fill="#1f5a6b" mask="url(#itowM)"/>
+  <circle cx="80" cy="45.75" r="2.6" fill="#c0271f"/>
+</svg>

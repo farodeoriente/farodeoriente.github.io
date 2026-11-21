@@ -112,3 +112,37 @@ document.addEventListener('DOMContentLoaded', function () {
   var h = location.hash.slice(1), pre = h && document.querySelector('.filters button[data-f="' + h + '"]');
   if (pre) pre.click();
 });
+
+/* scrolling itinerary: arrows, mouse drag, progress bar */
+document.querySelectorAll(".scroll-trip").forEach(function (box) {
+  var tr = box.querySelector(".st-track"), prev = box.querySelector(".st-prev"), next = box.querySelector(".st-next"), bar = box.querySelector(".st-prog i");
+  if (!tr) return;
+  function step() { var c = tr.querySelector(".st-card"); return c ? c.getBoundingClientRect().width + 22 : 300; }
+  function upd() {
+    var max = tr.scrollWidth - tr.clientWidth, x = tr.scrollLeft;
+    if (prev) prev.disabled = x < 4;
+    if (next) next.disabled = x > max - 4;
+    if (bar) { var w = Math.max(12, 100 * tr.clientWidth / tr.scrollWidth); bar.style.width = w + "%"; bar.style.left = (max > 0 ? (100 - w) * x / max : 0) + "%"; }
+  }
+  if (prev) prev.addEventListener("click", function () { tr.scrollBy({ left: -step(), behavior: "smooth" }); });
+  if (next) next.addEventListener("click", function () { tr.scrollBy({ left: step(), behavior: "smooth" }); });
+  tr.addEventListener("scroll", upd, { passive: true });
+  window.addEventListener("resize", upd);
+  var down = false, sx = 0, sl = 0, moved = false;
+  tr.addEventListener("pointerdown", function (e) { if (e.pointerType !== "mouse") return; down = true; moved = false; sx = e.clientX; sl = tr.scrollLeft; });
+  window.addEventListener("pointermove", function (e) {
+    if (!down) return;
+    var dx = e.clientX - sx;
+    if (!moved && Math.abs(dx) > 5) { moved = true; tr.classList.add("drag"); }
+    if (moved) tr.scrollLeft = sl - dx;
+  });
+  window.addEventListener("pointerup", function () {
+    if (!down) return; down = false;
+    if (moved) { tr.classList.remove("drag"); var s = step(); tr.scrollTo({ left: Math.round(tr.scrollLeft / s) * s, behavior: "smooth" }); }
+  });
+  tr.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") { e.preventDefault(); tr.scrollBy({ left: step(), behavior: "smooth" }); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); tr.scrollBy({ left: -step(), behavior: "smooth" }); }
+  });
+  upd();
+});

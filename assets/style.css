@@ -486,3 +486,13 @@ html[lang^=es] .duo small,html[lang=en] .duo small{font-family:var(--zh);letter-
 .trust-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 20px}
 .trust-foot .more{font-size:14px}
 @media(prefers-reduced-motion:reduce){.pf-res.in-anim{animation:none}}
+
+/* v3.3 summer page: photo gallery, 5-step timeline, second partner row */
+.gal{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:26px}
+.gal figure{margin:0;overflow:hidden;border:1px solid var(--line);background:var(--card);aspect-ratio:4/3}
+.gal img{width:100%;height:100%;object-fit:cover;display:block}
+@media(min-width:860px){.gal{grid-template-columns:1.3fr 1fr 1fr .75fr}.gal figure{aspect-ratio:auto;height:300px}}
+.steps.s5 .step h3{font-size:18px}
+@media(min-width:1000px){.steps.s5{grid-template-columns:repeat(5,1fr)}}
+.trust-2{margin-top:18px;padding-top:18px;border-top:1px dashed var(--line)}
+.gal img[src*="speech"]{object-position:75% 50%}.gal img[src*="gift"]{object-position:60% 50%}

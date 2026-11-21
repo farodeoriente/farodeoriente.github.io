@@ -536,3 +536,4 @@ html[lang^=es] .duo small,html[lang=en] .duo small{font-family:var(--zh);letter-
 .st-prog i{position:absolute;left:0;top:0;bottom:0;width:20%;background:linear-gradient(90deg,var(--red),var(--gold),var(--teal))}
 @media(max-width:640px){.st-hint{font-size:11px;letter-spacing:.08em}.st-card{flex-basis:78vw}}
 .sec.alt .st-card::after{box-shadow:0 0 0 4px var(--paper2)}
+.st-track.auto{scroll-snap-type:none}

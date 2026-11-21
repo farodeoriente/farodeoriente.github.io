@@ -113,22 +113,59 @@ document.addEventListener('DOMContentLoaded', function () {
   if (pre) pre.click();
 });
 
-/* scrolling itinerary: arrows, mouse drag, progress bar */
+/* scrolling itinerary: endless auto-scroll, pauses while the pointer is on it; arrows, drag, swipe */
 document.querySelectorAll(".scroll-trip").forEach(function (box) {
   var tr = box.querySelector(".st-track"), prev = box.querySelector(".st-prev"), next = box.querySelector(".st-next"), bar = box.querySelector(".st-prog i");
   if (!tr) return;
-  function step() { var c = tr.querySelector(".st-card"); return c ? c.getBoundingClientRect().width + 22 : 300; }
-  function upd() {
-    var max = tr.scrollWidth - tr.clientWidth, x = tr.scrollLeft;
-    if (prev) prev.disabled = x < 4;
-    if (next) next.disabled = x > max - 4;
-    if (bar) { var w = Math.max(12, 100 * tr.clientWidth / tr.scrollWidth); bar.style.width = w + "%"; bar.style.left = (max > 0 ? (100 - w) * x / max : 0) + "%"; }
+  var orig = Array.prototype.slice.call(tr.children);
+  orig.forEach(function (li) {  // second copy so the strip can loop without a jump
+    var c = li.cloneNode(true); c.setAttribute("aria-hidden", "true"); c.classList.add("st-clone");
+    c.querySelectorAll("img").forEach(function (i) { i.alt = ""; i.loading = "eager"; });
+    tr.appendChild(c);
+  });
+  tr.classList.add("auto");
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var SPEED = 38;  // px per second
+  var pos = 0, last = 0, hover = false, focus = false, hold = 0, down = false, moved = false, sx = 0, sl = 0;
+  function loopW() { var c = tr.querySelector(".st-clone"); return c ? c.offsetLeft - orig[0].offsetLeft : tr.scrollWidth / 2; }
+  function step() { return orig[0].getBoundingClientRect().width + 22; }
+  function wrap() {
+    var L = loopW();
+    if (tr.scrollLeft >= L) tr.scrollLeft -= L;
+    else if (tr.scrollLeft <= 0 && L > 0) tr.scrollLeft += L;
   }
-  if (prev) prev.addEventListener("click", function () { tr.scrollBy({ left: -step(), behavior: "smooth" }); });
-  if (next) next.addEventListener("click", function () { tr.scrollBy({ left: step(), behavior: "smooth" }); });
-  tr.addEventListener("scroll", upd, { passive: true });
-  window.addEventListener("resize", upd);
-  var down = false, sx = 0, sl = 0, moved = false;
+  function upd() {
+    if (!bar) return;
+    var L = loopW(), w = Math.max(10, 100 * tr.clientWidth / (L || 1));
+    w = Math.min(w, 100); bar.style.width = w + "%";
+    bar.style.left = ((tr.scrollLeft % L) / L) * (100 - w) + "%";
+  }
+  function paused() { return still || hover || focus || down || document.hidden || Date.now() < hold; }
+  function tick(t) {
+    var dt = last ? Math.min(t - last, 60) : 0; last = t;
+    if (!paused()) {
+      pos += SPEED * dt / 1000;
+      var L = loopW(); if (pos >= L) pos -= L;
+      tr.scrollLeft = pos;
+    } else { pos = tr.scrollLeft; }
+    upd();
+    requestAnimationFrame(tick);
+  }
+  function nudge(dir) {
+    hold = Date.now() + 2500;
+    if (dir < 0 && tr.scrollLeft < step()) tr.scrollLeft += loopW();
+    if (dir > 0 && tr.scrollLeft > loopW() - step()) tr.scrollLeft -= loopW();
+    tr.scrollBy({ left: dir * step(), behavior: "smooth" });
+  }
+  if (prev) prev.addEventListener("click", function () { nudge(-1); });
+  if (next) next.addEventListener("click", function () { nudge(1); });
+  box.addEventListener("mouseenter", function () { hover = true; });
+  box.addEventListener("mouseleave", function () { hover = false; });
+  tr.addEventListener("focusin", function () { focus = true; });
+  tr.addEventListener("focusout", function () { focus = false; });
+  tr.addEventListener("touchstart", function () { hold = Date.now() + 1e9; }, { passive: true });
+  tr.addEventListener("touchend", function () { hold = Date.now() + 2500; }, { passive: true });
+  tr.addEventListener("scroll", function () { if (paused()) wrap(); }, { passive: true });
   tr.addEventListener("pointerdown", function (e) { if (e.pointerType !== "mouse") return; down = true; moved = false; sx = e.clientX; sl = tr.scrollLeft; });
   window.addEventListener("pointermove", function (e) {
     if (!down) return;
@@ -136,13 +173,10 @@ document.querySelectorAll(".scroll-trip").forEach(function (box) {
     if (!moved && Math.abs(dx) > 5) { moved = true; tr.classList.add("drag"); }
     if (moved) tr.scrollLeft = sl - dx;
   });
-  window.addEventListener("pointerup", function () {
-    if (!down) return; down = false;
-    if (moved) { tr.classList.remove("drag"); var s = step(); tr.scrollTo({ left: Math.round(tr.scrollLeft / s) * s, behavior: "smooth" }); }
-  });
+  window.addEventListener("pointerup", function () { if (!down) return; down = false; if (moved) { tr.classList.remove("drag"); hold = Date.now() + 1500; } });
   tr.addEventListener("keydown", function (e) {
-    if (e.key === "ArrowRight") { e.preventDefault(); tr.scrollBy({ left: step(), behavior: "smooth" }); }
-    if (e.key === "ArrowLeft") { e.preventDefault(); tr.scrollBy({ left: -step(), behavior: "smooth" }); }
+    if (e.key === "ArrowRight") { e.preventDefault(); nudge(1); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); nudge(-1); }
   });
-  upd();
+  requestAnimationFrame(tick);
 });

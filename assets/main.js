@@ -84,6 +84,31 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   });
+  // find your child's path: who -> (child) age -> Chinese at home | (adult) where
+  var pf = document.querySelector('.pf-q');
+  if (pf) {
+    var steps = {}, out = document.querySelector('.pf-out');
+    pf.querySelectorAll('fieldset').forEach(function (f) { steps[f.getAttribute('data-step')] = f; });
+    var show = function (r) {
+      out.querySelector('.pf-start').hidden = !!r;
+      out.querySelectorAll('.pf-res').forEach(function (el) {
+        var on = el.getAttribute('data-r') === r;
+        if (on && el.hidden) { el.classList.remove('in-anim'); void el.offsetWidth; el.classList.add('in-anim'); }
+        el.hidden = !on;
+      });
+    };
+    pf.addEventListener('change', function () {
+      var v = function (n) { var x = pf.querySelector('input[name="' + n + '"]:checked'); return x ? x.value : ''; };
+      var who = v('who'), age = v('age'), home = v('home'), where = v('where'), r = '';
+      steps.age.hidden = who !== 'child';
+      steps.home.hidden = !(who === 'child' && age);
+      steps.where.hidden = who !== 'adult';
+      if (who === 'adult' && where) r = where === 'online' ? 'online' : 'adults';
+      if (who === 'child' && age && home) r = home === 'yes' ? 'weekend' : (age === '59' ? 'kids' : 'youth');
+      show(r);
+    });
+  }
+
   var h = location.hash.slice(1), pre = h && document.querySelector('.filters button[data-f="' + h + '"]');
   if (pre) pre.click();
 });

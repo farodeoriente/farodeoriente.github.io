@@ -170,9 +170,10 @@ h1,h2,h3{font-family:var(--serif);color:var(--deep);line-height:1.15;margin:0}
 .tile .price small{color:rgba(255,255,255,.8)}
 .tile .go{font-weight:600;font-size:14px;white-space:nowrap}.tile .go::after{content:" →"}
 .tile::after{content:"";position:absolute;inset:7px;border:1px solid rgba(255,255,255,.35);pointer-events:none}
-.t-red{background:linear-gradient(160deg,#c9372a,#9d1d16)}
-.t-ochre{background:linear-gradient(160deg,#c56636,#963f1d)}
-.t-teal{background:linear-gradient(160deg,#2b7086,#173f4b)}
+/* Plan A patterns, same fade as the summer tile: 回纹 for family, 米字格 for learning, 祥云 for online */
+.t-red{background:linear-gradient(180deg,rgba(176,38,28,.25),rgba(157,29,22,.95) 62%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M4 36V4H36V28H12V12H28V20H20' fill='none' stroke='%23e3b04a' stroke-width='1.6' opacity='.8'/%3E%3C/svg%3E") 0 0/40px 40px,#b52a20}
+.t-ochre{background:linear-gradient(180deg,rgba(184,83,42,.2),rgba(150,63,29,.95) 62%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1' opacity='.5'%3E%3Crect x='.5' y='.5' width='55' height='55'/%3E%3Cpath d='M0 28H56M28 0V56M0 0L56 56M56 0L0 56' stroke-dasharray='3 3'/%3E%3C/g%3E%3C/svg%3E") 0 0/56px 56px,#b8532a}
+.t-teal{background:linear-gradient(180deg,rgba(31,90,107,.2),rgba(23,63,75,.95) 62%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='40'%3E%3Cg fill='none' stroke='%23d9a23a' stroke-width='1.4' stroke-linecap='round' opacity='.75'%3E%3Cpath d='M10 28c-6 0-7-8-1-9c0-6 7-8 11-4c2-6 11-7 14 0c5-3 11 1 9 7c5 1 5 6 0 6z'/%3E%3Cpath d='M21 24a4 4 0 1 1 4-4a2 2 0 1 1-2 2'/%3E%3C/g%3E%3C/svg%3E") 0 0/52px 40px,#1f5a6b}
 .t-sea{background:linear-gradient(180deg,rgba(18,52,63,.2),rgba(18,52,63,.92) 62%),var(--sea);background-size:auto,48px 24px}
 .tile .kids{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
 .tile .kids a{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);padding:3px 10px;font-size:13px;position:relative;z-index:2}
@@ -356,3 +357,132 @@ dialog.wx .x{position:absolute;right:10px;top:6px;border:0;background:none;font-
 .js .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.js .rv{opacity:1;transform:none;transition:none}.tile,.ccard,.seal{transition:none}}
 @media print{.hdr,.wa-float,.idx,.mnav{display:none}}
+
+/* =====================================================================
+   v3 · mixed style: paper whitespace + vertical title strips (Dejeng-like),
+   ink-teal bands with gold lines and seigaiha corners (KEBUKE / GoShuin-like),
+   red mini seals, trust strip, "find your child's path", parent-meeting CTA
+   ===================================================================== */
+
+/* section heading: vertical title strip (题签) beside the heading */
+.sh{display:flex;flex-direction:column;align-items:center}
+.sh .zh{margin-bottom:8px}
+.sh.left{align-items:flex-start}
+@media(min-width:760px){
+ .sh{flex-direction:row;justify-content:center;align-items:flex-start;gap:22px}
+ .sh .zh{writing-mode:vertical-rl;letter-spacing:.32em;white-space:nowrap;margin:4px 0 0;padding:14px 7px;font-size:14px;color:var(--deep);
+  background:var(--card);border:1px solid var(--gold);outline:1px solid var(--line);outline-offset:-5px;box-shadow:3px 3px 0 rgba(217,162,58,.22)}
+ .sh .shb{max-width:40em}
+ .sh.left .shb{text-align:left}
+ .dark .sh .zh{background:var(--deep2);color:var(--gold2);outline-color:rgba(217,162,58,.35)}}
+
+/* side index: localised, drawn as small hanging strips */
+.idx{gap:8px}
+.idx a{font:600 12px var(--sans);letter-spacing:.08em;color:var(--teal);background:rgba(255,253,248,.92);border:1px solid var(--line);padding:8px 3px;text-align:center}
+html[lang^=zh] .idx a{font:500 14px var(--zh);letter-spacing:.2em}
+.idx a i{font:400 12px var(--zh);font-style:normal;color:var(--gold);margin-inline-end:6px;text-combine-upright:all}
+.idx a.on,.idx a:hover{color:#fff;background:var(--red);border-color:var(--red)}
+.idx a.on i,.idx a:hover i{color:#fff}
+
+/* parent-meeting button in the header */
+.hdr-meet{display:none;align-items:center;gap:6px;background:var(--red);color:#fff;padding:8px 12px;font-weight:600;font-size:14px;white-space:nowrap;
+ box-shadow:inset 0 0 0 2px var(--red),inset 0 0 0 3px rgba(255,255,255,.5);transition:background .2s}
+.hdr-meet:hover{background:#a51f18;box-shadow:inset 0 0 0 2px #a51f18,inset 0 0 0 3px rgba(255,255,255,.5)}
+.hdr-meet svg{width:16px;height:16px}
+@media(min-width:640px){.hdr-meet{display:inline-flex}}
+.mnav .m-meet{display:flex;align-items:center;gap:8px;color:var(--red)}.mnav .m-meet svg{width:18px;height:18px}
+
+/* red mini seal */
+.mseal{display:inline-grid;place-items:center;flex:none;width:28px;height:28px;background:var(--red);color:#fff;font:400 17px/1 var(--brush);border-radius:3px;
+ box-shadow:inset 0 0 0 2px var(--red),inset 0 0 0 3px rgba(255,255,255,.55);transform:rotate(-6deg)}
+.ccard .corner-seal{position:absolute;right:14px;top:14px;width:32px;height:32px;font-size:20px;z-index:1}
+
+/* blue-and-gold seigaiha corners + gold mount lines */
+.corner{position:absolute;width:130px;height:130px;z-index:1;pointer-events:none}
+.corner.c-tl{left:0;top:0}
+.corner.c-br{right:0;bottom:0;transform:rotate(180deg)}
+.hero .mount{position:absolute;inset:14px 14px 48px;border:1px solid rgba(217,162,58,.7);outline:1px solid rgba(217,162,58,.3);outline-offset:-6px;pointer-events:none;z-index:1}
+.hero .corner.c-br{bottom:34px}
+.hero .corner.c-tl{display:none}
+@media(min-width:1280px){.hero .corner.c-tl{display:block}}
+@media(max-width:720px){.hero .corner,.hero .mount{display:none}}
+.gilded::before{content:"";position:absolute;inset:12px;border:1px solid rgba(217,162,58,.45);outline:1px solid rgba(217,162,58,.2);outline-offset:-6px;pointer-events:none}
+.gilded .corner{width:120px;height:120px;opacity:.95}
+@media(max-width:720px){.gilded .corner{width:72px;height:72px}}
+.gilded .wrap{position:relative;z-index:2}
+
+/* trust strip under the hero */
+.trust{background:var(--card);border-bottom:1px solid var(--line)}
+.trust .wrap{padding-top:22px;padding-bottom:18px}
+.trust-top{display:grid;gap:14px;align-items:center}
+.trust-k{font:600 12px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--ochre)}
+.trust-k:hover{color:var(--red)}
+.trust-facts{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.trust-facts li{display:flex;align-items:center;gap:12px;font-size:14px;line-height:1.35}
+.trust-q{display:grid;gap:14px;margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+.trust-h{margin:0;font:600 1.05rem/1.3 var(--serif);color:var(--deep)}
+.trust-q figure{margin:0;display:grid;grid-template-columns:auto 1fr;column-gap:12px}
+.trust-q figure .mseal{grid-row:span 2}
+.trust-q blockquote{margin:0;font:italic 400 1rem/1.5 var(--serif);color:#46545c}
+.trust-q figcaption{font-size:13px;color:var(--muted);margin-top:4px}
+.trust-src{margin:12px 0 0;font-size:12px;color:var(--muted)}
+@media(min-width:900px){.trust-top{grid-template-columns:auto 1fr;gap:28px}.trust-facts{grid-template-columns:repeat(3,1fr)}
+ .trust-q{grid-template-columns:.8fr 1fr 1fr;align-items:start;gap:28px}}
+
+/* find your child's path */
+.pf{display:grid;gap:22px;max-width:980px;margin:0 auto;background:var(--card);border:1px solid var(--line);outline:1px solid var(--line);outline-offset:-7px;padding:28px 22px}
+@media(min-width:860px){.pf{grid-template-columns:1fr 1fr;gap:36px;padding:36px 38px}.pf-out{border-left:1px dashed var(--line);padding-left:36px}}
+html:not(.js) .pf{grid-template-columns:1fr}
+.pf-q{display:none}.js .pf-q{display:block}
+.pf fieldset{border:0;margin:0 0 18px;padding:0;min-width:0}
+.pf fieldset[hidden]{display:none}
+.pf legend{font:600 1.1rem var(--serif);color:var(--deep);margin-bottom:10px;padding:0}
+.pf label{display:inline-block;margin:0 8px 8px 0;cursor:pointer;position:relative}
+.pf input{position:absolute;opacity:0;width:1px;height:1px}
+.pf label span{display:inline-block;padding:9px 16px;border:1px solid var(--teal);color:var(--teal);font-weight:600;font-size:15px;background:var(--card);transition:background .2s,color .2s}
+.pf label:hover span{background:var(--paper2)}
+.pf input:checked+span{background:var(--teal);color:#fff}
+.pf input:focus-visible+span{outline:2px solid var(--coral);outline-offset:2px}
+.pf-start{color:var(--muted);margin:0;font-style:italic}
+html:not(.js) .pf-start{display:none}
+.js .pf-nojs{display:none}
+.pf-nojs{list-style:none;margin:0;padding:0}.pf-nojs li{padding:9px 0;border-bottom:1px dashed var(--line)}.pf-nojs b{color:var(--teal)}
+.pf-res[hidden]{display:none}
+.pf-res h3{font-size:1.5rem;margin:6px 0 2px}
+.pf-res .cn{font:500 13px var(--zh);letter-spacing:.3em;color:var(--ochre);margin:0 0 10px}
+.pf-res p{color:#46545c}
+.pf-res.in-anim{animation:pfIn .4s ease}
+@keyframes pfIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pf-meet{display:flex;gap:12px;align-items:center;justify-content:center;max-width:760px;margin:22px auto 0;color:var(--muted);font-size:15px}
+
+/* stroke-by-stroke band: dot-screen photo behind a dark "book cover" panel (GoShuin-like) */
+.method{position:relative;padding:110px 0;background:#f2eadb center/cover no-repeat}
+.cover-panel{position:relative;max-width:900px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:center;padding:54px 48px;color:#dfe9e6;
+ background:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.4px) 0 0/6px 6px,var(--deep);box-shadow:0 24px 60px rgba(18,52,63,.28)}
+.cover-panel::before{content:"";position:absolute;inset:10px;border:1px solid rgba(217,162,58,.45);pointer-events:none}
+.cover-panel .tag-v{writing-mode:vertical-rl;font:500 clamp(1.6rem,3vw,2.3rem)/1 var(--zh);letter-spacing:.3em;color:var(--deep);background:#f2eadb;padding:26px 16px;
+ outline:1px solid rgba(18,52,63,.25);outline-offset:-6px}
+.duo{font-weight:600;font-size:clamp(1.8rem,3.6vw,2.6rem);margin:0 0 16px;color:var(--paper)}
+.duo small{display:block;font:500 13px var(--sans);letter-spacing:.42em;color:var(--gold);margin-top:14px}
+html[lang^=es] .duo small,html[lang=en] .duo small{font-family:var(--zh);letter-spacing:.5em}
+.cover-panel p{font-size:17px;color:#c9d8d5;margin:0 0 24px;max-width:32em}
+.cover-panel .cp-seal{position:absolute;right:-14px;bottom:-14px;width:48px;height:48px;font-size:30px}
+@media(max-width:640px){.method{padding:64px 0}.cover-panel{grid-template-columns:1fr;padding:36px 26px;gap:20px}.cover-panel .tag-v{writing-mode:horizontal-tb;justify-self:start;padding:10px 16px;font-size:1.3rem}}
+
+/* summer photo inside the existing frames */
+.photo-frame{aspect-ratio:4/3}
+.photo-frame img{display:block;width:100%;height:100%;object-fit:cover}
+.trip .photo-frame{border-radius:50% 50% 8px 8px/38% 38% 8px 8px;border:6px solid #23505d;box-shadow:0 0 0 1px rgba(217,162,58,.5)}
+
+/* softer clouds: muted so they sit in the grey ink landscape / dark band */
+.hero .cloud{opacity:.42;filter:saturate(.35) brightness(1.15)}
+.dark .bgcloud{opacity:.12;filter:saturate(.2)}
+
+/* partnership on the home page */
+.expand{margin-top:30px;display:grid;gap:18px;align-items:center;padding:26px 24px;background:var(--paper2);border:1px solid var(--line);border-left:4px solid var(--red)}
+.expand h3{font-size:1.35rem;margin:0 0 6px}.expand p{margin:0;color:#46545c}
+.expand .mseal{width:40px;height:40px;font-size:24px}
+@media(min-width:860px){.expand{grid-template-columns:auto 1fr auto;gap:24px;padding:28px 32px}}
+.trust-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 20px}
+.trust-foot .more{font-size:14px}
+@media(prefers-reduced-motion:reduce){.pf-res.in-anim{animation:none}}
